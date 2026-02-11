@@ -1,0 +1,388 @@
+{
+  "contacts": [
+    {
+      "_id": "1770795084610",
+      "name": "Test User",
+      "email": "test@example.com",
+      "subject": "Test Message",
+      "message": "Testing the fixed API",
+      "status": "pending",
+      "createdAt": "2026-02-11T07:31:24.610Z",
+      "updatedAt": "2026-02-11T07:31:24.610Z"
+    },
+    {
+      "_id": "1770796370029",
+      "name": "Test User",
+      "email": "test@example.com",
+      "subject": "Test Message",
+      "message": "Testing port 5001",
+      "createdAt": "2026-02-11T07:52:50.029Z",
+      "updatedAt": "2026-02-11T07:52:50.029Z"
+    },
+    {
+      "_id": "1770796662395",
+      "name": "yoftahe ",
+      "email": "yofta@gmail.com",
+      "subject": "coffe house website ",
+      "message": "heyyyyyyyyyy",
+      "createdAt": "2026-02-11T07:57:42.395Z",
+      "updatedAt": "2026-02-11T07:57:42.395Z"
+    },
+    {
+      "_id": "1770798900207",
+      "name": "Test",
+      "email": "test@example.com",
+      "subject": "Test",
+      "message": "Test message",
+      "createdAt": "2026-02-11T08:35:00.207Z",
+      "updatedAt": "2026-02-11T08:35:00.207Z"
+    },
+    {
+      "_id": "1770798983180",
+      "name": "ELIAS KEMAL ABDELA",
+      "email": "kemalelias67@gmail.com",
+      "subject": "coffe house website ",
+      "message": "elllllllllllla",
+      "createdAt": "2026-02-11T08:36:23.180Z",
+      "updatedAt": "2026-02-11T08:36:23.180Z"
+    }
+  ],
+  "projects": [
+    {
+      "_id": "1",
+      "title": "E-Commerce Platform",
+      "description": "A full-stack e-commerce solution with user authentication, payment processing, and admin dashboard.",
+      "image": "https://via.placeholder.com/600x400/4F46E5/FFFFFF?text=E-Commerce",
+      "technologies": [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Stripe"
+      ],
+      "liveUrl": "#",
+      "githubUrl": "#",
+      "featured": true,
+      "category": "web",
+      "difficulty": "advanced",
+      "viewCount": 0,
+      "createdAt": "2026-02-11T07:02:05.496Z",
+      "updatedAt": "2026-02-11T07:02:05.496Z"
+    },
+    {
+      "_id": "2",
+      "title": "AI Chatbot Assistant",
+      "description": "An intelligent chatbot powered by natural language processing, providing customer support and information retrieval.",
+      "image": "https://via.placeholder.com/600x400/10B981/FFFFFF?text=AI+Chatbot",
+      "technologies": [
+        "Python",
+        "TensorFlow",
+        "NLP",
+        "FastAPI",
+        "React"
+      ],
+      "liveUrl": "#",
+      "githubUrl": "#",
+      "featured": true,
+      "category": "ai",
+      "difficulty": "advanced",
+      "viewCount": 0,
+      "createdAt": "2026-02-11T07:02:05.496Z",
+      "updatedAt": "2026-02-11T07:02:05.496Z"
+    },
+    {
+      "_id": "3",
+      "title": "Task Management App",
+      "description": "A collaborative task management application with real-time updates and team features.",
+      "image": "https://via.placeholder.com/600x400/10B981/FFFFFF?text=Task+Manager",
+      "technologies": [
+        "Vue.js",
+        "Express",
+        "Socket.io",
+        "PostgreSQL"
+      ],
+      "liveUrl": "#",
+      "githubUrl": "#",
+      "featured": false,
+      "category": "web",
+      "difficulty": "intermediate",
+      "viewCount": 0,
+      "createdAt": "2026-02-11T07:02:05.496Z",
+      "updatedAt": "2026-02-11T07:02:05.496Z"
+    },
+    {
+      "_id": "4",
+      "title": "Weather Dashboard",
+      "description": "A responsive weather dashboard with location-based forecasts and interactive maps.",
+      "image": "https://via.placeholder.com/600x400/F59E0B/FFFFFF?text=Weather+App",
+      "technologies": [
+        "React",
+        "API Integration",
+        "Chart.js",
+        "Tailwind"
+      ],
+      "liveUrl": "#",
+      "githubUrl": "#",
+      "featured": false,
+      "category": "web",
+      "difficulty": "intermediate",
+      "viewCount": 0,
+      "createdAt": "2026-02-11T07:02:05.496Z",
+      "updatedAt": "2026-02-11T07:02:05.496Z"
+    },
+    {
+      "_id": "5",
+      "title": "Network Security Scanner",
+      "description": "A comprehensive network security scanning tool that identifies vulnerabilities and provides detailed reports.",
+      "image": "https://via.placeholder.com/600x400/EF4444/FFFFFF?text=Security+Scanner",
+      "technologies": [
+        "Python",
+        "Nmap",
+        "Metasploit",
+        "React",
+        "Docker"
+      ],
+      "liveUrl": "#",
+      "githubUrl": "#",
+      "featured": true,
+      "category": "cybersecurity",
+      "difficulty": "advanced",
+      "viewCount": 0,
+      "createdAt": "2026-02-11T07:02:05.496Z",
+      "updatedAt": "2026-02-11T07:02:05.496Z"
+    }
+  ],
+  "skills": [
+    {
+      "_id": "1",
+      "name": "React",
+      "category": "Frontend",
+      "level": "advanced",
+      "yearsExperience": 3,
+      "featured": true
+    },
+    {
+      "_id": "2",
+      "name": "Vue.js",
+      "category": "Frontend",
+      "level": "intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "3",
+      "name": "JavaScript",
+      "category": "Frontend",
+      "level": "advanced",
+      "yearsExperience": 4,
+      "featured": true
+    },
+    {
+      "_id": "4",
+      "name": "TypeScript",
+      "category": "Frontend",
+      "level": "intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "5",
+      "name": "HTML5",
+      "category": "Frontend",
+      "level": "advanced",
+      "yearsExperience": 4
+    },
+    {
+      "_id": "6",
+      "name": "CSS3",
+      "category": "Frontend",
+      "level": "advanced",
+      "yearsExperience": 4
+    },
+    {
+      "_id": "7",
+      "name": "Tailwind CSS",
+      "category": "Frontend",
+      "level": "advanced",
+      "yearsExperience": 2,
+      "featured": true
+    },
+    {
+      "_id": "8",
+      "name": "Redux",
+      "category": "Frontend",
+      "level": "intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "9",
+      "name": "Node.js",
+      "category": "Backend",
+      "level": "advanced",
+      "yearsExperience": 3,
+      "featured": true
+    },
+    {
+      "_id": "10",
+      "name": "Express",
+      "category": "Backend",
+      "level": "advanced",
+      "yearsExperience": 3
+    },
+    {
+      "_id": "11",
+      "name": "Python",
+      "category": "Backend",
+      "level": "advanced",
+      "yearsExperience": 3,
+      "featured": true
+    },
+    {
+      "_id": "12",
+      "name": "Django",
+      "category": "Backend",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "13",
+      "name": "REST APIs",
+      "category": "Backend",
+      "level": "advanced",
+      "yearsExperience": 3
+    },
+    {
+      "_id": "14",
+      "name": "GraphQL",
+      "category": "Backend",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "15",
+      "name": "PostgreSQL",
+      "category": "Backend",
+      "level": "intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "16",
+      "name": "MongoDB",
+      "category": "Backend",
+      "level": "intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "17",
+      "name": "Network Security",
+      "category": "Cybersecurity",
+      "level": "advanced",
+      "yearsExperience": 2,
+      "featured": true
+    },
+    {
+      "_id": "18",
+      "name": "Penetration Testing",
+      "category": "Cybersecurity",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "19",
+      "name": "Cryptography",
+      "category": "Cybersecurity",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "20",
+      "name": "Firewall Configuration",
+      "category": "Cybersecurity",
+      "level": "advanced",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "21",
+      "name": "SIEM Tools",
+      "category": "Cybersecurity",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "22",
+      "name": "Incident Response",
+      "category": "Cybersecurity",
+      "level": "advanced",
+      "yearsExperience": 2,
+      "featured": true
+    },
+    {
+      "_id": "23",
+      "name": "Security Auditing",
+      "category": "Cybersecurity",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "24",
+      "name": "Ethical Hacking",
+      "category": "Cybersecurity",
+      "level": "advanced",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "25",
+      "name": "Git",
+      "category": "Tools & Others",
+      "level": "advanced",
+      "yearsExperience": 4,
+      "featured": true
+    },
+    {
+      "_id": "26",
+      "name": "Docker",
+      "category": "Tools & Others",
+      "level": "intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "27",
+      "name": "AWS",
+      "category": "Tools & Others",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "28",
+      "name": "Firebase",
+      "category": "Tools & Others",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "29",
+      "name": "Figma",
+      "category": "Tools & Others",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "30",
+      "name": "Webpack",
+      "category": "Tools & Others",
+      "level": "intermediate",
+      "yearsExperience": 2
+    },
+    {
+      "_id": "31",
+      "name": "Jest",
+      "category": "Tools & Others",
+      "level": "intermediate",
+      "yearsExperience": 1
+    },
+    {
+      "_id": "32",
+      "name": "CI/CD",
+      "category": "Tools & Others",
+      "level": "intermediate",
+      "yearsExperience": 1
+    }
+  ]
+}

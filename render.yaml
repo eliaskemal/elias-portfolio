@@ -1,0 +1,46 @@
+services:
+  # Frontend Service
+  - type: web
+    name: elias-portfolio-frontend
+    env: static
+    buildCommand: npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://elias-portfolio-backend.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://elias-portfolio-backend.onrender.com/api/*
+
+  # Backend Service
+  - type: web
+    name: elias-portfolio-backend
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CLIENT_URL
+        value: https://elias-portfolio-frontend.onrender.com
+      - key: MONGODB_URI
+        value: ${MONGODB_URI}
+      - key: JWT_SECRET
+        value: ${JWT_SECRET}
+      - key: EMAIL_HOST
+        value: ${EMAIL_HOST}
+      - key: EMAIL_PORT
+        value: ${EMAIL_PORT}
+      - key: EMAIL_USER
+        value: ${EMAIL_USER}
+      - key: EMAIL_PASS
+        value: ${EMAIL_PASS}
+
+# MongoDB Service (Free tier)
+databases:
+  - name: elias-portfolio-db
+    databaseName: elias-portfolio
+    user: elias
