@@ -92,10 +92,10 @@ const Projects = () => {
             description:
               "A full-stack e-commerce solution with React, Node.js, and MongoDB. Features include user authentication, payment processing, and admin dashboard.",
             image:
-              "https://via.placeholder.com/400x300/1e40af/ffffff?text=E-Commerce+Platform",
+              "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600&h=400&fit=crop",
             technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-            githubUrl: "https://github.com/eliaskemal",
-            liveUrl: "https://example-ecommerce.com",
+            githubUrl: "https://github.com/eliaskemal/ecommerce-platform",
+            liveUrl: "https://graceful-sopapillas-4ac0c9.netlify.app",
             featured: true,
             category: "full-stack",
             difficulty: "advanced",
