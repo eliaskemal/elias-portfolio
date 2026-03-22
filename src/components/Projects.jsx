@@ -109,9 +109,9 @@ const Projects = () => {
             description:
               "A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
             image:
-              "https://via.placeholder.com/400x300/1e40af/ffffff?text=Task+Manager",
+              "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400&fit=crop",
             technologies: ["Vue.js", "Express", "Socket.io", "PostgreSQL"],
-            githubUrl: "https://github.com/eliaskemal",
+            githubUrl: "https://github.com/eliaskemal/task-management-app",
             liveUrl: "https://example-tasks.com",
             featured: true,
             category: "full-stack",
