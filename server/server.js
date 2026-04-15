@@ -1,9 +1,21 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
+
+let dbConfig;
+let initDatabase;
+
+// Try to load PostgreSQL config, fallback to mock if it fails
+try {
+  dbConfig = require('./config/database');
+  initDatabase = dbConfig.initDatabase;
+} catch (error) {
+  console.log('PostgreSQL not available, using mock database');
+  dbConfig = require('./config/database-fallback');
+  initDatabase = dbConfig.initDatabase;
+}
 
 const app = express();
 const PORT = process.env.PORT || 10000;
@@ -26,25 +38,25 @@ app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/elias-portfolio', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ Connected to MongoDB'))
-.catch(err => console.error('❌ MongoDB connection error:', err));
+// Initialize database
+initDatabase().catch((err) => {
+  console.error('Database initialization failed:', err.message);
+  console.log('Server continuing with fallback database...');
+});
 
 // Import routes
 const contactRoutes = require('./routes/contact');
 const projectRoutes = require('./routes/projects');
 const skillRoutes = require('./routes/skills');
 const analyticsRoutes = require('./routes/analytics');
+const adminRoutes = require('./routes/admin');
 
 // Routes
 app.use('/api/contact', contactRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

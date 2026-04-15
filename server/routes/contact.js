@@ -1,27 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const Contact = require('../models/Contact');
+const { query } = require('../config/database');
 const nodemailer = require('nodemailer');
 
 // Get all contact messages (for admin)
 router.get('/', async (req, res) => {
   try {
-    const { page = 1, limit = 10, status } = req.query;
-    const skip = (page - 1) * limit;
+    const { page = 1, limit = 10 } = req.query;
+    const offset = (page - 1) * limit;
     
-    let query = {};
-    if (status) query.status = status;
+    const contacts = await query(
+      'SELECT * FROM contacts ORDER BY created_at DESC LIMIT $1 OFFSET $2',
+      [parseInt(limit), parseInt(offset)]
+    );
     
-    const contacts = await Contact.find(query)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(parseInt(limit));
-      
-    const total = await Contact.countDocuments(query);
+    const totalResult = await query('SELECT COUNT(*) FROM contacts');
+    const total = parseInt(totalResult.rows[0].count);
     
     res.json({
       success: true,
-      data: contacts,
+      data: contacts.rows,
       pagination: {
         page: parseInt(page),
         limit: parseInt(limit),
@@ -51,14 +49,12 @@ router.post('/', async (req, res) => {
       });
     }
     
-    const contact = new Contact({
-      name,
-      email,
-      subject,
-      message
-    });
+    const result = await query(
+      'INSERT INTO contacts (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING *',
+      [name, email, subject, message]
+    );
     
-    await contact.save();
+    const contact = result.rows[0];
     
     // Send email notification
     await sendEmailNotification({ name, email, subject, message });
@@ -81,13 +77,12 @@ router.post('/', async (req, res) => {
 router.patch('/:id', async (req, res) => {
   try {
     const { status } = req.body;
-    const contact = await Contact.findByIdAndUpdate(
-      req.params.id,
-      { status, updatedAt: Date.now() },
-      { new: true }
+    const result = await query(
+      'UPDATE contacts SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
+      [status, req.params.id]
     );
     
-    if (!contact) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Contact message not found'
@@ -97,7 +92,7 @@ router.patch('/:id', async (req, res) => {
     res.json({
       success: true,
       message: 'Status updated successfully',
-      data: contact
+      data: result.rows[0]
     });
   } catch (error) {
     res.status(500).json({
@@ -111,9 +106,9 @@ router.patch('/:id', async (req, res) => {
 // Delete contact message
 router.delete('/:id', async (req, res) => {
   try {
-    const contact = await Contact.findByIdAndDelete(req.params.id);
+    const result = await query('DELETE FROM contacts WHERE id = $1 RETURNING *', [req.params.id]);
     
-    if (!contact) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Contact message not found'

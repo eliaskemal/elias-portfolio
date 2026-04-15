@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Project = require('../models/Project');
+const { query } = require('../config/database');
 
 // Get all projects with filtering and pagination
 router.get('/', async (req, res) => {
@@ -10,36 +10,56 @@ router.get('/', async (req, res) => {
       limit = 10, 
       category, 
       featured, 
-      difficulty,
       search 
     } = req.query;
     
-    const skip = (page - 1) * limit;
+    const offset = (page - 1) * limit;
     
-    // Build query
-    let query = {};
+    // Build query conditions
+    let whereConditions = [];
+    let queryParams = [];
+    let paramCount = 0;
     
-    if (category) query.category = category;
-    if (featured === 'true') query.featured = true;
-    if (difficulty) query.difficulty = difficulty;
-    if (search) {
-      query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { technologies: { $in: [new RegExp(search, 'i')] } }
-      ];
+    if (category) {
+      paramCount++;
+      whereConditions.push(`category = $${paramCount}`);
+      queryParams.push(category);
     }
     
-    const projects = await Project.find(query)
-      .sort({ featured: -1, createdAt: -1 })
-      .skip(skip)
-      .limit(parseInt(limit));
-      
-    const total = await Project.countDocuments(query);
+    if (featured === 'true') {
+      paramCount++;
+      whereConditions.push(`featured = $${paramCount}`);
+      queryParams.push(true);
+    }
+    
+    if (search) {
+      paramCount++;
+      whereConditions.push(`(title ILIKE $${paramCount} OR description ILIKE $${paramCount} OR $${paramCount} = ANY(technologies))`);
+      queryParams.push(`%${search}%`);
+    }
+    
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+    
+    // Get projects
+    const projectsQuery = `
+      SELECT * FROM projects 
+      ${whereClause}
+      ORDER BY featured DESC, created_at DESC 
+      LIMIT $${paramCount + 1} OFFSET $${paramCount + 2}
+    `;
+    
+    queryParams.push(parseInt(limit), parseInt(offset));
+    
+    const projects = await query(projectsQuery, queryParams);
+    
+    // Get total count
+    const countQuery = `SELECT COUNT(*) FROM projects ${whereClause}`;
+    const totalResult = await query(countQuery, queryParams.slice(0, -2));
+    const total = parseInt(totalResult.rows[0].count);
     
     res.json({
       success: true,
-      data: projects,
+      data: projects.rows,
       pagination: {
         page: parseInt(page),
         limit: parseInt(limit),
@@ -47,8 +67,7 @@ router.get('/', async (req, res) => {
         pages: Math.ceil(total / limit)
       },
       filters: {
-        categories: ['web', 'mobile', 'ai', 'cybersecurity', 'other'],
-        difficulties: ['beginner', 'intermediate', 'advanced']
+        categories: ['web', 'mobile', 'ai', 'cybersecurity', 'other']
       }
     });
   } catch (error) {
@@ -63,9 +82,9 @@ router.get('/', async (req, res) => {
 // Get single project by ID
 router.get('/:id', async (req, res) => {
   try {
-    const project = await Project.findById(req.params.id);
+    const result = await query('SELECT * FROM projects WHERE id = $1', [req.params.id]);
     
-    if (!project) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Project not found'
@@ -73,13 +92,11 @@ router.get('/:id', async (req, res) => {
     }
     
     // Increment view count
-    await Project.findByIdAndUpdate(req.params.id, { 
-      $inc: { viewCount: 1 } 
-    });
+    await query('UPDATE projects SET view_count = view_count + 1 WHERE id = $1', [req.params.id]);
     
     res.json({
       success: true,
-      data: project
+      data: result.rows[0]
     });
   } catch (error) {
     res.status(500).json({
@@ -93,23 +110,25 @@ router.get('/:id', async (req, res) => {
 // Create new project
 router.post('/', async (req, res) => {
   try {
-    const projectData = req.body;
+    const { title, description, technologies, github_url, live_url, image_url, featured = false } = req.body;
     
     // Validation
-    if (!projectData.title || !projectData.description || !projectData.image) {
+    if (!title || !description || !image_url) {
       return res.status(400).json({
         success: false,
         message: 'Title, description, and image are required'
       });
     }
     
-    const project = new Project(projectData);
-    await project.save();
+    const result = await query(
+      'INSERT INTO projects (title, description, technologies, github_url, live_url, image_url, featured) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+      [title, description, technologies, github_url, live_url, image_url, featured]
+    );
     
     res.status(201).json({
       success: true,
       message: 'Project created successfully',
-      data: project
+      data: result.rows[0]
     });
   } catch (error) {
     res.status(500).json({
@@ -123,13 +142,14 @@ router.post('/', async (req, res) => {
 // Update project
 router.put('/:id', async (req, res) => {
   try {
-    const project = await Project.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
+    const { title, description, technologies, github_url, live_url, image_url, featured } = req.body;
+    
+    const result = await query(
+      'UPDATE projects SET title = $1, description = $2, technologies = $3, github_url = $4, live_url = $5, image_url = $6, featured = $7, updated_at = CURRENT_TIMESTAMP WHERE id = $8 RETURNING *',
+      [title, description, technologies, github_url, live_url, image_url, featured, req.params.id]
     );
     
-    if (!project) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Project not found'
@@ -139,7 +159,7 @@ router.put('/:id', async (req, res) => {
     res.json({
       success: true,
       message: 'Project updated successfully',
-      data: project
+      data: result.rows[0]
     });
   } catch (error) {
     res.status(500).json({
@@ -153,9 +173,9 @@ router.put('/:id', async (req, res) => {
 // Delete project
 router.delete('/:id', async (req, res) => {
   try {
-    const project = await Project.findByIdAndDelete(req.params.id);
+    const result = await query('DELETE FROM projects WHERE id = $1 RETURNING *', [req.params.id]);
     
-    if (!project) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Project not found'
@@ -178,13 +198,13 @@ router.delete('/:id', async (req, res) => {
 // Get featured projects
 router.get('/featured/list', async (req, res) => {
   try {
-    const projects = await Project.find({ featured: true })
-      .sort({ createdAt: -1 })
-      .limit(6);
+    const projects = await query(
+      'SELECT * FROM projects WHERE featured = true ORDER BY created_at DESC LIMIT 6'
+    );
       
     res.json({
       success: true,
-      data: projects
+      data: projects.rows
     });
   } catch (error) {
     res.status(500).json({

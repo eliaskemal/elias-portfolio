@@ -3,21 +3,25 @@ services:
   - type: web
     name: elias-portfolio-frontend
     env: static
-    buildCommand: npm run build
+    buildCommand: npm install && npm run build
     publishDir: dist
     envVars:
       - key: VITE_API_URL
-        value: https://elias-portfolio-backend.onrender.com/api
+        value: https://elias-portfolio-backend.onrender.com
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
     routes:
       - type: rewrite
         source: /api/*
-        destination: https://elias-portfolio-backend.onrender.com/api/*
+        destination: https://elias-portfolio-backend.onrender.com/*
 
   # Backend Service
   - type: web
     name: elias-portfolio-backend
     env: node
-    buildCommand: cd server && npm install
+    buildCommand: cd server && npm ci
     startCommand: cd server && npm start
     envVars:
       - key: NODE_ENV
@@ -26,8 +30,8 @@ services:
         value: 10000
       - key: CLIENT_URL
         value: https://elias-portfolio-frontend.onrender.com
-      - key: MONGODB_URI
-        value: ${MONGODB_URI}
+      - key: DATABASE_URL
+        value: ${DATABASE_URL}
       - key: JWT_SECRET
         value: ${JWT_SECRET}
       - key: EMAIL_HOST
@@ -38,9 +42,11 @@ services:
         value: ${EMAIL_USER}
       - key: EMAIL_PASS
         value: ${EMAIL_PASS}
+    healthCheckPath: /api/health
 
-# MongoDB Service (Free tier)
+# PostgreSQL Service (Free tier)
 databases:
   - name: elias-portfolio-db
-    databaseName: elias-portfolio
+    databaseName: elias_portfolio
     user: elias
+    plan: free

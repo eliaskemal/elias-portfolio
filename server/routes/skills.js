@@ -1,24 +1,38 @@
 const express = require('express');
 const router = express.Router();
-const Skill = require('../models/Skill');
+const { query } = require('../config/database');
 
 // Get all skills with filtering
 router.get('/', async (req, res) => {
   try {
-    const { category, level, featured } = req.query;
+    const { category, proficiency } = req.query;
     
-    // Build query
-    let query = {};
+    // Build query conditions
+    let whereConditions = [];
+    let queryParams = [];
+    let paramCount = 0;
     
-    if (category) query.category = category;
-    if (level) query.level = level;
-    if (featured === 'true') query.featured = true;
+    if (category) {
+      paramCount++;
+      whereConditions.push(`category = $${paramCount}`);
+      queryParams.push(category);
+    }
     
-    const skills = await Skill.find(query)
-      .sort({ featured: -1, name: 1 });
+    if (proficiency) {
+      paramCount++;
+      whereConditions.push(`proficiency = $${paramCount}`);
+      queryParams.push(parseInt(proficiency));
+    }
+    
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+    
+    const skills = await query(
+      `SELECT * FROM skills ${whereClause} ORDER BY name ASC`,
+      queryParams
+    );
       
     // Group skills by category
-    const groupedSkills = skills.reduce((acc, skill) => {
+    const groupedSkills = skills.rows.reduce((acc, skill) => {
       if (!acc[skill.category]) {
         acc[skill.category] = [];
       }
@@ -29,8 +43,7 @@ router.get('/', async (req, res) => {
     res.json({
       success: true,
       data: groupedSkills,
-      categories: ['Frontend', 'Backend', 'Cybersecurity', 'Tools & Others'],
-      levels: ['beginner', 'intermediate', 'advanced', 'expert']
+      categories: ['Frontend', 'Backend', 'Cybersecurity', 'Tools & Others']
     });
   } catch (error) {
     res.status(500).json({
@@ -44,9 +57,9 @@ router.get('/', async (req, res) => {
 // Get single skill by ID
 router.get('/:id', async (req, res) => {
   try {
-    const skill = await Skill.findById(req.params.id);
+    const result = await query('SELECT * FROM skills WHERE id = $1', [req.params.id]);
     
-    if (!skill) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Skill not found'
@@ -55,7 +68,7 @@ router.get('/:id', async (req, res) => {
     
     res.json({
       success: true,
-      data: skill
+      data: result.rows[0]
     });
   } catch (error) {
     res.status(500).json({
@@ -69,23 +82,25 @@ router.get('/:id', async (req, res) => {
 // Create new skill
 router.post('/', async (req, res) => {
   try {
-    const skillData = req.body;
+    const { name, category, proficiency } = req.body;
     
     // Validation
-    if (!skillData.name || !skillData.category) {
+    if (!name || !category || !proficiency) {
       return res.status(400).json({
         success: false,
-        message: 'Skill name and category are required'
+        message: 'Skill name, category, and proficiency are required'
       });
     }
     
-    const skill = new Skill(skillData);
-    await skill.save();
+    const result = await query(
+      'INSERT INTO skills (name, category, proficiency) VALUES ($1, $2, $3) RETURNING *',
+      [name, category, parseInt(proficiency)]
+    );
     
     res.status(201).json({
       success: true,
       message: 'Skill created successfully',
-      data: skill
+      data: result.rows[0]
     });
   } catch (error) {
     res.status(500).json({
@@ -99,13 +114,14 @@ router.post('/', async (req, res) => {
 // Update skill
 router.put('/:id', async (req, res) => {
   try {
-    const skill = await Skill.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
+    const { name, category, proficiency } = req.body;
+    
+    const result = await query(
+      'UPDATE skills SET name = $1, category = $2, proficiency = $3 WHERE id = $4 RETURNING *',
+      [name, category, parseInt(proficiency), req.params.id]
     );
     
-    if (!skill) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Skill not found'
@@ -115,7 +131,7 @@ router.put('/:id', async (req, res) => {
     res.json({
       success: true,
       message: 'Skill updated successfully',
-      data: skill
+      data: result.rows[0]
     });
   } catch (error) {
     res.status(500).json({
@@ -129,9 +145,9 @@ router.put('/:id', async (req, res) => {
 // Delete skill
 router.delete('/:id', async (req, res) => {
   try {
-    const skill = await Skill.findByIdAndDelete(req.params.id);
+    const result = await query('DELETE FROM skills WHERE id = $1 RETURNING *', [req.params.id]);
     
-    if (!skill) {
+    if (result.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: 'Skill not found'
@@ -154,13 +170,14 @@ router.delete('/:id', async (req, res) => {
 // Get skills by category
 router.get('/category/:categoryName', async (req, res) => {
   try {
-    const skills = await Skill.find({ 
-      category: req.params.categoryName 
-    }).sort({ name: 1 });
+    const result = await query(
+      'SELECT * FROM skills WHERE category = $1 ORDER BY name ASC',
+      [req.params.categoryName]
+    );
     
     res.json({
       success: true,
-      data: skills
+      data: result.rows
     });
   } catch (error) {
     res.status(500).json({
