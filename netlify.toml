@@ -7,7 +7,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "https://elias-portfolio-2.onrender.com/api/:splat"
   status = 200
 
 [[redirects]]
