@@ -1,78 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Connection Test</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .result { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
-        .success { background-color: #d4edda; color: #155724; }
-        .error { background-color: #f8d7da; color: #721c24; }
-        .info { background-color: #d1ecf1; color: #0c5460; }
-        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
-        pre { background: #f8f9fa; padding: 10px; overflow-x: auto; }
-    </style>
-</head>
-<body>
-    <h1>Backend Connection Test</h1>
-    <p>Testing if frontend can connect to backend server...</p>
-    
-    <button onclick="testAll()">Test All Endpoints</button>
-    <button onclick="testHealth()">Test Health Only</button>
-    <button onclick="testContacts()">Test Contacts Only</button>
-    <div id="results"></div>
+HP@ELIAS MINGW64 ~/OneDrive/Desktop/Elias's Portfolio (master) $ git status On
+branch master Your branch is up to date with 'origin/master'. Changes not staged
+for commit: (use "git add
+<file
+  >..." to update what will be committed) (use "git restore
+  <file
+    >..." to discard changes in working directory) modified: .env.example no
+    changes added to commit (use "git add" and/or "git commit -a")<!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Simple Connection Test</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+          }
+          .result {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+          }
+          .success {
+            background-color: #d4edda;
+            color: #155724;
+          }
+          .error {
+            background-color: #f8d7da;
+            color: #721c24;
+          }
+          .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+          }
+          button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+          }
+          pre {
+            background: #f8f9fa;
+            padding: 10px;
+            overflow-x: auto;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Backend Connection Test</h1>
+        <p>Testing if frontend can connect to backend server...</p>
 
-    <script>
-        const API_BASE = 'http://localhost:5000';
-        
-        function log(message, type = 'info') {
-            const results = document.getElementById('results');
-            const div = document.createElement('div');
+        <button onclick="testAll()">Test All Endpoints</button>
+        <button onclick="testHealth()">Test Health Only</button>
+        <button onclick="testContacts()">Test Contacts Only</button>
+        <div id="results"></div>
+
+        <script>
+          const API_BASE = "http://localhost:5000";
+
+          function log(message, type = "info") {
+            const results = document.getElementById("results");
+            const div = document.createElement("div");
             div.className = `result ${type}`;
             div.innerHTML = message;
             results.appendChild(div);
-        }
-        
-        async function testHealth() {
-            log('Testing health endpoint...', 'info');
+          }
+
+          async function testHealth() {
+            log("Testing health endpoint...", "info");
             try {
-                const response = await fetch(`${API_BASE}/api/health`);
-                log(`Health endpoint responded: ${response.status}`, response.ok ? 'success' : 'error');
-                const data = await response.json();
-                log(`Health data: <pre>${JSON.stringify(data, null, 2)}</pre>`, 'success');
+              const response = await fetch(`${API_BASE}/api/health`);
+              log(
+                `Health endpoint responded: ${response.status}`,
+                response.ok ? "success" : "error",
+              );
+              const data = await response.json();
+              log(
+                `Health data: <pre>${JSON.stringify(data, null, 2)}</pre>`,
+                "success",
+              );
             } catch (error) {
-                log(`Health endpoint failed: ${error.message}`, 'error');
+              log(`Health endpoint failed: ${error.message}`, "error");
             }
-        }
-        
-        async function testContacts() {
-            log('Testing contacts endpoint...', 'info');
+          }
+
+          async function testContacts() {
+            log("Testing contacts endpoint...", "info");
             try {
-                const response = await fetch(`${API_BASE}/api/admin/tables/contacts`);
-                log(`Contacts endpoint responded: ${response.status}`, response.ok ? 'success' : 'error');
-                const data = await response.json();
-                log(`Contacts data: Found ${data.data ? data.data.length : 0} messages`, 'success');
-                if (data.data && data.data.length > 0) {
-                    log(`First message: <pre>${JSON.stringify(data.data[0], null, 2)}</pre>`, 'success');
-                }
+              const response = await fetch(
+                `${API_BASE}/api/admin/tables/contacts`,
+              );
+              log(
+                `Contacts endpoint responded: ${response.status}`,
+                response.ok ? "success" : "error",
+              );
+              const data = await response.json();
+              log(
+                `Contacts data: Found ${data.data ? data.data.length : 0} messages`,
+                "success",
+              );
+              if (data.data && data.data.length > 0) {
+                log(
+                  `First message: <pre>${JSON.stringify(data.data[0], null, 2)}</pre>`,
+                  "success",
+                );
+              }
             } catch (error) {
-                log(`Contacts endpoint failed: ${error.message}`, 'error');
+              log(`Contacts endpoint failed: ${error.message}`, "error");
             }
-        }
-        
-        async function testAll() {
-            document.getElementById('results').innerHTML = '';
+          }
+
+          async function testAll() {
+            document.getElementById("results").innerHTML = "";
             await testHealth();
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 1000));
             await testContacts();
-        }
-        
-        // Auto-test on page load
-        window.onload = () => {
-            log('Page loaded. Starting automatic test...', 'info');
+          }
+
+          // Auto-test on page load
+          window.onload = () => {
+            log("Page loaded. Starting automatic test...", "info");
             testAll();
-        };
-    </script>
-</body>
-</html>
+          };
+        </script>
+      </body>
+    </html>
+  </file></file
+>
