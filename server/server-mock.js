@@ -40,6 +40,7 @@ const contactRoutes = require('./routes/contact-mock');
 const projectRoutes = require('./routes/projects-mock');
 const skillRoutes = require('./routes/skills-mock');
 const analyticsRoutes = require('./routes/analytics-mock');
+const adminPortalRoutes = require('./routes/admin-portal');
 
 // Routes
 app.use('/api/contact', contactRoutes);
@@ -47,6 +48,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/admin', adminPortalRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

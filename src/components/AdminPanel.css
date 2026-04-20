@@ -1,0 +1,130 @@
+.admin-panel {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.admin-header h1 {
+  color: #1f2937;
+  margin: 0;
+}
+
+.refresh-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.refresh-btn:hover {
+  background: #2563eb;
+}
+
+.no-messages {
+  text-align: center;
+  color: #6b7280;
+  font-size: 18px;
+  margin: 50px 0;
+}
+
+.messages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.message-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.message-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.message-header h3 {
+  color: #1f2937;
+  margin: 0;
+  font-size: 18px;
+}
+
+.message-date {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.message-info {
+  margin-bottom: 15px;
+}
+
+.message-info p {
+  margin: 5px 0;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.message-content {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f9fafb;
+  border-radius: 5px;
+  border-left: 4px solid #3b82f6;
+}
+
+.message-content p {
+  margin: 0;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.message-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+.error {
+  color: #ef4444;
+  background: #fef2f2;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #fecaca;
+}

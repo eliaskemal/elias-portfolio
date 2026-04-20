@@ -38,6 +38,8 @@ router.post('/', async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
     
+    console.log('Received contact form data:', { name, email, subject, message });
+    
     // Validation
     if (!name || !email || !subject || !message) {
       return res.status(400).json({
@@ -52,6 +54,8 @@ router.post('/', async (req, res) => {
       subject,
       message
     });
+    
+    console.log('Contact created successfully:', contact);
     
     console.log('✅ Contact created:', name);
     

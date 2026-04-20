@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Test</title>
+</head>
+<body>
+    <h1>Admin Page Test</h1>
+    <p>Testing admin API endpoints...</p>
+    <div id="results"></div>
+
+    <script>
+        async function testAdminAPI() {
+            const results = document.getElementById('results');
+            
+            try {
+                // Test health endpoint
+                const healthResponse = await fetch('http://localhost:5000/api/health');
+                const healthData = await healthResponse.json();
+                results.innerHTML += '<p>Health: ' + JSON.stringify(healthData) + '</p>';
+                
+                // Test admin stats
+                const statsResponse = await fetch('http://localhost:5000/api/admin/stats');
+                const statsData = await statsResponse.json();
+                results.innerHTML += '<p>Stats: ' + JSON.stringify(statsData) + '</p>';
+                
+                // Test contacts
+                const contactsResponse = await fetch('http://localhost:5000/api/admin/tables/contacts');
+                const contactsData = await contactsResponse.json();
+                results.innerHTML += '<p>Contacts: ' + JSON.stringify(contactsData) + '</p>';
+                
+            } catch (error) {
+                results.innerHTML += '<p>Error: ' + error.message + '</p>';
+            }
+        }
+        
+        testAdminAPI();
+    </script>
+</body>
+</html>

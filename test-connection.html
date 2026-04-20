@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Test</title>
+</head>
+<body>
+    <h1>Backend Connection Test</h1>
+    <div id="results"></div>
+
+    <script>
+        async function testConnection() {
+            const results = document.getElementById('results');
+            
+            // Test different ports
+            const ports = [5000, 10000];
+            
+            for (const port of ports) {
+                try {
+                    results.innerHTML += `<h3>Testing port ${port}...</h3>`;
+                    
+                    // Test health endpoint
+                    const response = await fetch(`http://localhost:${port}/api/health`);
+                    const data = await response.json();
+                    
+                    results.innerHTML += `<p>Port ${port}: SUCCESS - ${JSON.stringify(data)}</p>`;
+                    
+                    // Test admin endpoint
+                    const adminResponse = await fetch(`http://localhost:${port}/api/admin/stats`);
+                    const adminData = await adminResponse.json();
+                    
+                    results.innerHTML += `<p>Port ${port} Admin: SUCCESS - ${JSON.stringify(adminData)}</p>`;
+                    
+                } catch (error) {
+                    results.innerHTML += `<p>Port ${port}: ERROR - ${error.message}</p>`;
+                }
+            }
+        }
+        
+        testConnection();
+    </script>
+</body>
+</html>

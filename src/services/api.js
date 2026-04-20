@@ -1,8 +1,11 @@
 import axios from 'axios';
 
 // Create axios instance with base URL
+const baseURL = 'http://localhost:5000'; // Always use local backend for development
+console.log('API Base URL:', baseURL);
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
+  baseURL: `${baseURL}/api`,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

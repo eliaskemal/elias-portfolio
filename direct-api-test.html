@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; }
+        .error { background-color: #f8d7da; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Direct API Test</h1>
+    <button onclick="testHealth()">Test Health Endpoint</button>
+    <button onclick="testStats()">Test Admin Stats</button>
+    <button onclick="testContacts()">Test Contacts</button>
+    <div id="results"></div>
+
+    <script>
+        async function testHealth() {
+            const results = document.getElementById('results');
+            try {
+                const response = await fetch('http://localhost:5000/api/health');
+                const data = await response.json();
+                results.innerHTML += `<div class="result success">Health: ${JSON.stringify(data)}</div>`;
+            } catch (error) {
+                results.innerHTML += `<div class="result error">Health Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testStats() {
+            const results = document.getElementById('results');
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/stats');
+                const data = await response.json();
+                results.innerHTML += `<div class="result success">Stats: ${JSON.stringify(data)}</div>`;
+            } catch (error) {
+                results.innerHTML += `<div class="result error">Stats Error: ${error.message}</div>`;
+            }
+        }
+
+        async function testContacts() {
+            const results = document.getElementById('results');
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/tables/contacts');
+                const data = await response.json();
+                results.innerHTML += `<div class="result success">Contacts: Found ${data.data ? data.data.length : 0} messages</div>`;
+                if (data.data && data.data.length > 0) {
+                    results.innerHTML += `<div class="result success">First message: ${JSON.stringify(data.data[0])}</div>`;
+                }
+            } catch (error) {
+                results.innerHTML += `<div class="result error">Contacts Error: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
