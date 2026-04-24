@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans antialiased;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    min-height: 100vh;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-gradient-to-r from-dark-700 to-dark-800 text-white hover:from-dark-800 hover:to-dark-900 border border-primary-500/30;
+  }
+  
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .dark-glass {
+    @apply bg-dark-900/50 backdrop-blur-lg border border-primary-500/20;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-400 to-accent-400 bg-clip-text text-transparent;
+  }
+  
+  .hero-gradient {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 25%, #2563eb 50%, #3b82f6 75%, #60a5fa 100%);
+    background-size: 400% 400%;
+    animation: gradient-xy 15s ease infinite;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-2xl hover:shadow-primary-500/25 hover:-translate-y-1;
+  }
+  
+  .nav-link {
+    @apply relative text-gray-300 hover:text-white transition-colors duration-200;
+  }
+  
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-400 to-accent-400 transition-all duration-300;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  .glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  }
+  
+  .glow-lg {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.7);
+  }
+}
