@@ -1,4 +1,5 @@
 import React from "react";
+import profileImage from "/public/images/DSC_0104.JPG";
 
 const Hero = () => {
   return (
@@ -47,7 +48,7 @@ const Hero = () => {
             <div className="relative group">
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
               <img
-                src="/images/DSC_0104.JPG"
+                src={profileImage}
                 alt="Elias"
                 className="relative w-48 h-48 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-full object-cover border-4 border-blue-600 shadow-2xl"
               />

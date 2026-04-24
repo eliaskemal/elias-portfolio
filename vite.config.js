@@ -12,8 +12,10 @@ export default defineConfig({
         manualChunks: undefined,
       },
     },
+    copyPublicDir: true,
   },
   server: {
     host: true,
   },
+  publicDir: 'public',
 })
