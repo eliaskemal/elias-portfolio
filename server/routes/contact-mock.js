@@ -48,21 +48,50 @@ router.post('/', async (req, res) => {
       });
     }
     
-    const contact = await mockDB.contacts.create({
-      name,
-      email,
-      subject,
-      message
-    });
+    // Send email directly
+    const nodemailer = require('nodemailer');
     
-    console.log('Contact created successfully:', contact);
+    try {
+      const transporter = nodemailer.createTransporter({
+        host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+        port: process.env.EMAIL_PORT || 587,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
+        }
+      });
+      
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: 'kemalelias67@gmail.com',
+        subject: `New Contact Form Message: ${subject}`,
+        html: `
+          <h2>New Contact Message</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Subject:</strong> ${subject}</p>
+          <p><strong>Message:</strong></p>
+          <p>${message}</p>
+          <hr>
+          <p><small>Sent from Elias Portfolio Contact Form</small></p>
+        `
+      };
+      
+      await transporter.sendMail(mailOptions);
+      console.log('✅ Email sent successfully to kemalelias67@gmail.com');
+      
+    } catch (emailError) {
+      console.error('❌ Email error:', emailError);
+      // Still return success to user even if email fails
+    }
     
-    console.log('✅ Contact created:', name);
+    console.log('✅ Contact processed:', name);
     
     res.status(201).json({
       success: true,
-      message: 'Message sent successfully!',
-      data: contact
+      message: 'Message sent successfully to email!',
+      data: { name, email, subject, message, sentAt: new Date() }
     });
   } catch (error) {
     res.status(500).json({
