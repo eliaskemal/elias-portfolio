@@ -211,15 +211,10 @@ const Skills = () => {
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-center">
                       <span className="text-sm text-gray-400">
                         {skill.level}
                       </span>
-                      {skill.yearsExperience && (
-                        <span className="text-xs text-gray-500">
-                          {skill.yearsExperience} years
-                        </span>
-                      )}
                     </div>
                   </div>
                 </div>
