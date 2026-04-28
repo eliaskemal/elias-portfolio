@@ -201,16 +201,10 @@ const Projects = () => {
                     </span>
                   ))}
                 </div>
-                <div className="flex gap-4">
-                  <a
-                    href={project.liveUrl}
-                    className="flex-1 text-center px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 transform hover:scale-105"
-                  >
-                    Live Demo
-                  </a>
+                <div className="flex justify-center">
                   <a
                     href={project.githubUrl}
-                    className="flex-1 text-center px-4 py-2 border-2 border-blue-500 text-blue-400 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-300 transform hover:scale-105"
+                    className="w-full text-center px-4 py-2 border-2 border-blue-500 text-blue-400 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-300 transform hover:scale-105"
                   >
                     GitHub
                   </a>
